@@ -26,7 +26,7 @@ publishing {
     }
 
     repositories {
-        maven("https://repo.repsy.io/mvn/lone64/releases/") {
+        maven("https://maven.lone64.dev/releases/") {
             credentials {
                 username = "${properties["MAVEN_USERNAME"]}"
                 password = "${properties["MAVEN_PASSWORD"]}"
