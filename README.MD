@@ -1,5 +1,5 @@
 # MCFramework
-Framework for (Bukkit) Plugin.
+Framework for minecraft bukkit/proxy plugin. (Bukkit, Bungeecord, etc...)
 - Inventory classes.
 - Configuration classes.
 - Dependencies classes.
