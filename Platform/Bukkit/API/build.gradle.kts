@@ -26,8 +26,7 @@ publishing {
     }
 
     repositories {
-        maven("${properties["MAVEN_URL"]}") {
-            isAllowInsecureProtocol = true
+        maven("https://repo.repsy.io/mvn/lone64/releases/") {
             credentials {
                 username = "${properties["MAVEN_USERNAME"]}"
                 password = "${properties["MAVEN_PASSWORD"]}"
