@@ -1,87 +1,44 @@
 package io.gitlab.lone64.framework.bukkit.api.command;
 
 import io.gitlab.lone64.framework.bukkit.api.command.argument.CommandInput;
+import io.gitlab.lone64.framework.bukkit.api.command.handler.CommandHandler;
 import io.gitlab.lone64.framework.bukkit.api.command.map.SubCommandList;
 import io.gitlab.lone64.framework.bukkit.api.command.map.SubCommandMap;
 import io.gitlab.lone64.framework.bukkit.api.command.data.Condition;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static io.gitlab.lone64.framework.bukkit.api.util.string.ColorUtil.format;
 
-@Setter
 @Getter
-public abstract class BaseCommand {
+public class BaseCommand {
 
-    private String name;
-    private String usage;
-    private String description;
-    private List<String> aliases;
-    private Condition condition;
-    private String permission;
+    public String name;
 
-    private String consoleMessage;
-    private String permissionMessage;
+    public String usage = "/<command>";
+    public String description = "No description provided.";
+    public List<String> aliases = new ArrayList<>();
+    public Condition condition = null;
+    public String permission = "";
+
+    public String consoleMessage = "&c해당 명령어는 콘솔에서 사용할 수 없습니다.";
+    public String permissionMessage = "&c당신은 해당 명령어를 사용할 권한이 없습니다.";
 
     private final SubCommandMap commandMap = new SubCommandMap();
     private final SubCommandList commandList = new SubCommandList();
 
-    public BaseCommand(String name, Condition condition) {
-        this(name, "/<command>", "No description provided.", new ArrayList<>(), condition, "", "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, Condition condition, String permission) {
-        this(name, "/<command>", "No description provided.", new ArrayList<>(), condition, permission, "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, String description, Condition condition) {
-        this(name, "/<command>", description, new ArrayList<>(), condition, "", "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, String description, Condition condition, String permission) {
-        this(name, "/<command>", description, new ArrayList<>(), condition, permission, "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, String description, Condition condition, String permission, String permissionMessage) {
-        this(name, "/<command>", description, new ArrayList<>(), condition, permission, "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", permissionMessage);
-    }
-
-    public BaseCommand(String name, String usage, String description, Condition condition) {
-        this(name, usage, description, new ArrayList<>(), condition, "", "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, String usage, String description, List<String> aliases, Condition condition, String permission) {
-        this(name, usage, description, aliases, condition, permission, "&c해당 명령어는 콘솔에서 사용할 수 없습니다.", "");
-    }
-
-    public BaseCommand(String name, String usage, String description, List<String> aliases, Condition condition, String permission, String consoleMessage) {
-        this(name, usage, description, aliases, condition, permission, consoleMessage, "");
-    }
-
-    public BaseCommand(
-            String name,
-            String usage,
-            String description,
-            List<String> aliases,
-            Condition condition,
-            String permission,
-            String consoleMessage,
-            String permissionMessage
-    ) {
+    public BaseCommand(String name) {
         this.name = name;
-        this.usage = usage;
-        this.description = description;
-        this.aliases = aliases;
-        this.condition = condition;
-        this.permission = permission;
-        this.consoleMessage = consoleMessage;
-        this.permissionMessage = permissionMessage;
+    }
+
+    public BaseCommand and(CommandHandler commandHandler) {
+        return commandHandler.accept(this);
     }
 
     public BaseCommand then(BaseCommand command) {
