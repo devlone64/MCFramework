@@ -1,0 +1,15 @@
+# Intellij
+.idea/
+out/
+
+# Platform
+Platform/Bukkit/API/build/
+Platform/Bukkit/API/gradle.properties
+
+Platform/Bukkit/Plugin/build/
+
+# Gradle
+build/
+.gradle/
+
+gradle.properties
