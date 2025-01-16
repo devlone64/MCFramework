@@ -1,4 +1,4 @@
-name: Framework
+name: MCFramework
 main: io.gitlab.lone64.framework.bukkit.plugin.FrameworkPlugin
 author: lone64
 version: 1.0.0
