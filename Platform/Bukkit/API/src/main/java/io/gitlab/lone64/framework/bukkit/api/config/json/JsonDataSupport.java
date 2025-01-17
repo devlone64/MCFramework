@@ -8,25 +8,24 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.function.Consumer;
 
-public class JsonSupport {
+public class JsonDataSupport {
 
     private final Plugin plugin;
     private final String path;
     private final File file;
     private final GsonBuilder gsonBuilder;
 
-    public JsonSupport(Plugin plugin, String path) {
+    public JsonDataSupport(Plugin plugin, String path) {
         this(plugin, path, new File(plugin.getDataFolder(), path));
     }
 
-    public JsonSupport(Plugin plugin, String dir, String path) {
+    public JsonDataSupport(Plugin plugin, String dir, String path) {
         this(plugin, "%s/%s".formatted(dir, path), new File(plugin.getDataFolder(), "%s/%s".formatted(dir, path)));
     }
 
-    public JsonSupport(Plugin plugin, String path, File file) {
+    public JsonDataSupport(Plugin plugin, String path, File file) {
         this.plugin = plugin;
         this.path = path;
         this.file = file;
