@@ -21,7 +21,26 @@ public class JsonPathSupport {
         this.plugin = plugin;
         this.fileName = fileName;
         this.file = new File(plugin.getDataFolder(), fileName);
-        if (isCreateNewFile && !createNewFile()) plugin.getLogger().severe("An error occurred while creating the file.");
+        if (isCreateNewFile) {
+            var dataFolder = plugin.getDataFolder();
+            if (!dataFolder.exists() && !dataFolder.mkdirs()) plugin.getLogger().severe("An error occurred while creating the data folder.");
+            var jsonFile = new File(dataFolder, fileName);
+            if (!jsonFile.exists() && !this.createNewFile()) plugin.getLogger().severe("An error occurred while creating the json file.");
+        }
+    }
+
+    public JsonPathSupport(Plugin plugin, String dirName, String fileName, boolean isCreateNewFile) {
+        this.plugin = plugin;
+        this.fileName = fileName;
+        this.file = new File(plugin.getDataFolder(), "%s/%s".formatted(dirName, fileName));
+        if (isCreateNewFile) {
+            var dataFolder = plugin.getDataFolder();
+            if (!dataFolder.exists() && !dataFolder.mkdirs()) plugin.getLogger().severe("An error occurred while creating the data folder.");
+            var fileFolder = new File(dataFolder, dirName);
+            if (!fileFolder.exists() && !fileFolder.mkdirs()) plugin.getLogger().severe("An error occurred while creating the file folder.");
+            var jsonFile = new File(fileFolder, fileName);
+            if (!jsonFile.exists() && !this.createNewFile()) plugin.getLogger().severe("An error occurred while creating the json file.");
+        }
     }
 
     public boolean createNewFile() {
