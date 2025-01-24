@@ -102,6 +102,18 @@ public class YamlSupport {
         return config.contains(key);
     }
 
+    public List<?> getList(String key) {
+        return config.getList(key);
+    }
+
+    public List<?> getList(String key, List<?> def) {
+        return config.getList(key, def);
+    }
+
+    public List<String> getStringList(String key) {
+        return config.getStringList(key);
+    }
+
     public List<String> getKeys() {
         return config.getKeys(false).stream().toList();
     }
