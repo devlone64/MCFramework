@@ -1,5 +1,6 @@
 package io.gitlab.lone64.framework.bukkit.api.config.json;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.gitlab.lone64.framework.bukkit.api.util.java.FileUtil;
 import org.bukkit.plugin.Plugin;
@@ -8,28 +9,36 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.function.Consumer;
 
+@Deprecated
 public class JsonDataSupport {
 
     private final Plugin plugin;
     private final String path;
     private final File file;
-    private final GsonBuilder gsonBuilder;
+    private final Gson gson;
 
-    public JsonDataSupport(Plugin plugin, String path) {
-        this(plugin, path, new File(plugin.getDataFolder(), path));
+    public JsonDataSupport(Plugin plugin, String path, Map<Type, Object> map) {
+        this(plugin, path, new File(plugin.getDataFolder(), path), map);
     }
 
-    public JsonDataSupport(Plugin plugin, String dir, String path) {
-        this(plugin, "%s/%s".formatted(dir, path), new File(plugin.getDataFolder(), "%s/%s".formatted(dir, path)));
+    public JsonDataSupport(Plugin plugin, String dir, String path, Map<Type, Object> map) {
+        this(plugin, "%s/%s".formatted(dir, path), new File(plugin.getDataFolder(), "%s/%s".formatted(dir, path)), map);
     }
 
-    public JsonDataSupport(Plugin plugin, String path, File file) {
+    public JsonDataSupport(Plugin plugin, String path, File file, Map<Type, Object> map) {
         this.plugin = plugin;
         this.path = path;
         this.file = file;
-        this.gsonBuilder = new GsonBuilder().setPrettyPrinting();
+
+        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        for (Map.Entry<Type, Object> entry : map.entrySet()) {
+            builder.registerTypeAdapter(entry.getKey(), entry.getValue());
+        }
+        this.gson = builder.create();
     }
 
     public boolean createNewFile() {
@@ -44,32 +53,26 @@ public class JsonDataSupport {
         return file.exists();
     }
 
-    public void registerTypeAdapter(Class<?> type, Object adapter) {
-        this.gsonBuilder.registerTypeAdapter(type, adapter);
-    }
-
-    public <T> boolean saveJson(T data) {
+    public <T> boolean saveJson(T data, Type type) {
         File parent = this.file.getParentFile();
         if (!parent.exists() && !parent.mkdirs()) {
             throw new IllegalArgumentException("An error occurred while creating folder: %s".formatted(parent.getPath()));
-        }
-
-        if (!exists() && !createNewFile()) {
+        } else if (!exists() && !createNewFile()) {
             throw new IllegalArgumentException("An error occurred while creating file: %s".formatted(this.file.getPath()));
         }
 
         try (FileWriter writer = new FileWriter(this.file)) {
-            writer.write(this.gsonBuilder.create().toJson(data, data.getClass()));
+            writer.write(this.gson.toJson(data, type));
             return true;
         } catch (IOException e) {
             return false;
         }
     }
 
-    public <T> T loadJson(Class<T> type) {
+    public <T> T loadJson(Type type) {
         if (!exists()) return null;
         try (FileReader reader = new FileReader(this.file)) {
-            T data = this.gsonBuilder.create().fromJson(reader, type);
+            T data = this.gson.fromJson(reader, type);
             if (data == null) return null;
             reader.close();
             return data;

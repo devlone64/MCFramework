@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "io.gitlab.lone64.framework.bukkit.api"
-version = "1.0.5"
+version = "1.0.9"
 
 dependencies {
     compileOnly("com.iridium", "IridiumColorAPI", "1.0.9")
