@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "io.gitlab.lone64.framework.bukkit.api"
-version = "1.1.0"
+version = "1.0.0"
 
 dependencies {
     compileOnly("com.iridium", "IridiumColorAPI", "1.0.9")
@@ -13,14 +13,14 @@ dependencies {
 }
 
 tasks.jar {
-    archiveFileName.set("mcframework-api-${version}-release.jar")
+    archiveFileName.set("framework-api-${version}-release.jar")
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "io.gitlab.lone64"
-            artifactId = "mcframework-api"
+            artifactId = "framework-api"
             from(components["java"])
         }
     }

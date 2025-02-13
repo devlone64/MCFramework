@@ -53,7 +53,7 @@ public class YamlSupport {
 
     public void set(String key, Object value) {
         try {
-            this.config.set(key, serialize(value));
+            this.config.set(key, value != null ? serialize(value) : null);
             this.config.save(this.file);
         } catch (IOException e) {
             throw new IllegalArgumentException("An error occurred while saving config: %s".formatted(key), e);

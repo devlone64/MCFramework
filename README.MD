@@ -1,4 +1,4 @@
-# MCFramework
+# Framework
 Framework for minecraft bukkit/proxy plugin. (Bukkit, Bungeecord, etc...)
 - Inventory classes.
 - Configuration classes.

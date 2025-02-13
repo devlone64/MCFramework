@@ -15,5 +15,5 @@ dependencies {
 }
 
 tasks.shadowJar {
-    archiveFileName.set("mcframework-bukkit-${version}-release.jar")
+    archiveFileName.set("framework-bukkit-${version}-release.jar")
 }

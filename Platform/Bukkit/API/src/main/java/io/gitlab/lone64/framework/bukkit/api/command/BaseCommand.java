@@ -104,4 +104,8 @@ public class BaseCommand {
         return new ArrayList<>();
     }
 
+    public boolean isSubCommand(String name) {
+        return commandMap.get(name) != null;
+    }
+
 }
